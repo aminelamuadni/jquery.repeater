@@ -149,17 +149,63 @@ $.fn.repeater = function (fig) {
                 $filterNested($item.find('[name]'), repeaters)
                 .each(function () {
                     var $input = $(this);
-                    // match non empty brackets (ex: "[foo]")
-                    var matches = $input.attr('name').match(/\[[^\]]+\]/g);
+                    var name = $input.attr('name');
 
-                    var name = matches ?
-                        // strip "[" and "]" characters
-                        last(matches).replace(/\[|\]/g, '') :
-                        $input.attr('name');
+					// Parse name to extract nested parts
+					var parts = [];
+					var inBracket = false;
+					var part = '';
+
+					// Extract all parts from the name
+					for (var i = 0; i < name.length; i++) {
+						var c = name[i];
+
+						if (c === '[') {
+							if (inBracket) {
+								parts.push(part);
+								part = '';
+							}
+							inBracket = true;
+						}
+						else if (c === ']') {
+							if (part) {
+								parts.push(part);
+								part = '';
+							}
+							inBracket = false;
+						}
+						else if (inBracket) {
+							part += c;
+						}
+					}
+
+					var result = '';
+
+					// Process the extracted parts
+					if (parts.length > 0) {
+						var filtered = [];
+						var listName = $item.closest('[data-repeater-list]').data('repeater-list');
+
+						// Keep only meaningful parts
+						for (var j = 0; j < parts.length; j++) {
+							if (isNaN(parseInt(parts[j])) && parts[j] !== listName) {
+								filtered.push(parts[j]);
+							}
+						}
+
+						// Create final field name part
+						if (filtered.length > 0) {
+							result = filtered.join('][');
+						} else {
+							result = parts[parts.length - 1];
+						}
+					} else {
+						result = name;
+					}
 
 
-                    var newName = groupName + '[' + index + '][' + name + ']' +
-                        ($input.is(':checkbox') || $input.attr('multiple') ? '[]' : '');
+					var newName = groupName + '[' + index + '][' + result + ']' +
+						($input.is(':checkbox') || $input.attr('multiple') ? '[]' : '');
 
                     $input.attr('name', newName);
 
