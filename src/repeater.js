@@ -309,6 +309,9 @@ $.fn.repeater = function (fig) {
                 initNested($item);
             }
             show.call($item.get(0));
+			if (!$.contains(document, $item.get(0))) {
+				setIndexes($items(), getGroupName(), fig.repeaters);
+			}
         };
 
         setList = function (rows) {

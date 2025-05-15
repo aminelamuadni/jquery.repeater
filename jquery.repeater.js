@@ -1,6 +1,6 @@
 // jquery.repeater version 1.2.2
 // https://github.com/DubFriend/jquery.repeater
-// (MIT) 13-05-2025
+// (MIT) 15-05-2025
 // Brian Detering <BDeterin@gmail.com> (http://www.briandetering.net/)
 (function ($) {
 'use strict';
@@ -1178,6 +1178,9 @@ $.fn.repeater = function (fig) {
                 initNested($item);
             }
             show.call($item.get(0));
+			if (!$.contains(document, $item.get(0))) {
+				setIndexes($items(), getGroupName(), fig.repeaters);
+			}
         };
 
         setList = function (rows) {
