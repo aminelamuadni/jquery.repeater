@@ -176,7 +176,7 @@ QUnit.test('add item with default values and rewrite names', function (assert) {
         getNamedInputValues(this.$repeater.find('[data-repeater-item]').last()),
         generateNameMappedInputValues('a', 2, '', {
             'group-a[2][text-input]': 'foo',
-            'group-a[2][checkbox-input][]' : ['A', 'B'],
+            'group-a[2][checkbox-input]' : ['A', 'B'],
             "group-a[2][multiple-select-input][]": ['B']
         })
     );

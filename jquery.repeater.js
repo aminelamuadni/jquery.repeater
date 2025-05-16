@@ -1,6 +1,6 @@
 // jquery.repeater version 1.2.2
 // https://github.com/DubFriend/jquery.repeater
-// (MIT) 15-05-2025
+// (MIT) 16-05-2025
 // Brian Detering <BDeterin@gmail.com> (http://www.briandetering.net/)
 (function ($) {
 'use strict';
@@ -1073,8 +1073,10 @@ $.fn.repeater = function (fig) {
 					}
 
 
-					var newName = groupName + '[' + index + '][' + result + ']' +
-						($input.is(':checkbox') || $input.attr('multiple') ? '[]' : '');
+					var newName = groupName + '[' + index + '][' + result + ']';
+					if ($input.attr('multiple')) {
+						newName += '[]';
+					}
 
                     $input.attr('name', newName);
 
